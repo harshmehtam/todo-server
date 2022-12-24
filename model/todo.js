@@ -11,7 +11,7 @@ var todoSchema = new mongoose.Schema({
   },
   hobby: [
     {
-      type: String,
+      type: Number,
       required: true,
     },
   ],

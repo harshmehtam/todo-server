@@ -13,6 +13,11 @@ exports.createTodo = async (req, res) => {
   // }
   const { body } = req;
   console.log("body => ", body);
+  if (body.status.value === "active") {
+    body.status = true;
+  } else {
+    body.status = true;
+  }
   const todo = new Todo(body);
   try {
     await todo.save();
@@ -21,7 +26,7 @@ exports.createTodo = async (req, res) => {
       message: "Create successfully",
     });
   } catch (error) {
-    console.log("error =========> ",error)
+    console.log("error =========> ", error);
     res.status(500).send({
       status: 500,
       message: `Something wen't wrong`,
@@ -44,22 +49,6 @@ exports.readTodo = async (req, res) => {
   }
 };
 
-// exports.readUserById = async (req, res) => {
-//   const id = req.params.userId;
-//   try {
-//     const user = await User.findById(id);
-//     res.status(200).send({
-//       status: 200,
-//       response: user,
-//     });
-//   } catch (error) {
-//     res.status(500).send({
-//       status: 500,
-//       message: `Something wen't wrong`,
-//     });
-//   }
-// };
-
 exports.updateTodo = async (req, res) => {
   const id = req.params.id;
   try {
@@ -76,7 +65,7 @@ exports.updateTodo = async (req, res) => {
     res.status(200).send({
       status: 200,
       message: "Update successfully",
-      response: todo
+      response: todo,
     });
   } catch (error) {
     res.status(500).send({
@@ -87,7 +76,7 @@ exports.updateTodo = async (req, res) => {
 };
 
 exports.deleteTodo = async (req, res) => {
-  const id = req.params.userId;
+  const id = req.params.id;
   try {
     const todo = await Todo.findByIdAndRemove(id, {
       useFindAndModify: false,
