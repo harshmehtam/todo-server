@@ -1,18 +1,7 @@
 const Todo = require("../model/todo");
 
 exports.createTodo = async (req, res) => {
-  // if (!req.body.firstName || !req.body.lastName || !req.body.email) {
-  //   return res.status(422).json({
-  //     status: 422,
-  //     user: {
-  //       firstName: "firstName is required",
-  //       lastName: "lastName is required",
-  //       email: "enail is required",
-  //     },
-  //   });
-  // }
   const { body } = req;
-  console.log("body => ", body);
   if (body.status.value === "active") {
     body.status = true;
   } else {
@@ -26,7 +15,6 @@ exports.createTodo = async (req, res) => {
       message: "Create successfully",
     });
   } catch (error) {
-    console.log("error =========> ", error);
     res.status(500).send({
       status: 500,
       message: `Something wen't wrong`,
@@ -50,16 +38,22 @@ exports.readTodo = async (req, res) => {
 };
 
 exports.updateTodo = async (req, res) => {
-  const id = req.params.id;
+  const { body, params } = req;
+  const id = params.id;
   try {
-    const todo = await Todo.findByIdAndUpdate(id, req.body, {
+    if (body.status.value === "active") {
+      body.status = true;
+    } else {
+      body.status = true;
+    }
+    const todo = await Todo.findByIdAndUpdate(id, body, {
       new: true,
       useFindAndModify: false,
     });
     if (!todo) {
       return res.status(500).send({
         status: 500,
-        message: `user not found with id ${id}`,
+        message: `todo not found with id ${id}`,
       });
     }
     res.status(200).send({
@@ -68,6 +62,7 @@ exports.updateTodo = async (req, res) => {
       response: todo,
     });
   } catch (error) {
+    console.log("error ==> ", error);
     res.status(500).send({
       status: 500,
       message: `Something wen't wrong`,

@@ -10,11 +10,12 @@ const app = express();
 // Middlewares
 app.use(bodyParser.json());
 app.use(cors());
+
 // database init
 mongoose
   .connect(process.env.MONGODB_URL, {
     useUnifiedTopology: true,
-    useNewUrlParser: true    
+    useNewUrlParser: true,
   })
   .then(() => {
     console.log("connected to database...");
@@ -41,3 +42,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`app is running at ${port}`);
 });
+
+exports.app = app;
