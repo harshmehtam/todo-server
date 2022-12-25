@@ -62,7 +62,6 @@ exports.updateTodo = async (req, res) => {
       response: todo,
     });
   } catch (error) {
-    console.log("error ==> ", error);
     res.status(500).send({
       status: 500,
       message: `Something wen't wrong`,
